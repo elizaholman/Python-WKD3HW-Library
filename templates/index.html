@@ -3,35 +3,55 @@
 
 <head>
     <title>BOOKBUSTER</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Oswald:wght@500&family=Unbounded:wght@600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bebas+Neue&family=Oswald:wght@500&family=Unbounded:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bebas+Neue&family=Chakra+Petch:ital,wght@1,500;1,600;1,700&family=Oswald:wght@500&family=PT+Sans+Narrow&family=Unbounded:wght@600&display=swap" rel="stylesheet">
 </head>
 
+<header>
+    <nav>
+        <li>
+            <a id="home" href="/library">Home</a>
+            <h1>BOOKBUSTER</h1>
+        </li>
+    </nav>
+</header>
+
 <body>
-    <header>
-        <nav>
-            <li>
-                <a href="/library">Home</a>
-            </li>
-        </nav>
-        <hr>
-    </header>
-    <h1>BOOKBUSTER</h1>
-
-
-
-    {% for book in books %}
     <div>
-        <ul>
-            <li>
-                {{book.title}} {{book.author}} {{book.genre}} <a href="books/{{books.index(book)}}">Book Details</a> 
-                <form action="/remove/{{ loop.index }}" method="post">
-                    <input type="submit" value="Remove Book">
-                </form>
-            </li>
-        </ul>
+        {% for book in books %}
+            <ul>
+                <li>
+                    <b>Title:</b> {{book.title}} <b>Author:</b> {{book.author}} <b>Genre:</b> {{book.genre}}
+                    <br>
+                    <a href="books/{{books.index(book)}}">
+                        <button>
+                            Details
+                        </button>
+                    </a> 
+                    <form action="/remove/{{ loop.index }}" method="post">
+                        <input type="submit" value="Archive">
+                    </form>
+                    {% if book.checked_out %}
+                    <form action="/checked_in/{{ loop.index }}" method="post">
+                        <label for="checked_out" id="checked_out"></label>
+                        <input type="button" name="checked_out" id="checked_out" value="Check-in">
+                    {% else %}
+                    <form action="/checked_out/{{ loop.index }}" method="post">
+                    <label for="checked_out id=" id="checked_out"></label>
+                    <input type="button" name="checked_out" id="checked_out" value="Check-out">
+                    {% endif %}
+                    </form>
+                </li>
+            </ul>
+        {% endfor %}
     </div>
-    {% endfor %}
+</body>
 
-    <h3>Add Book to Library:</h3>
+<footer>
+    <h3>Add to Library:</h3>
     <form action="/library" method="post">
         <label for="title">Title</label>
         <input type="text" name="title" id="title">
@@ -44,7 +64,9 @@
 
         <input type="submit" value="Add Book">
     </form>
-</body>
+</footer>
+
+
 
 
 </html>
